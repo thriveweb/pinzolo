@@ -97,7 +97,7 @@ function pinzolo_customize_register($wp_customize)
   foreach($colors as $color)
   {
     // SETTINGS
-    $wp_customize->add_setting( $color['slug'], array( 'default' => $color['default'], 'type' => 'option', 'capability' => 'edit_theme_options' ));
+    $wp_customize->add_setting( $color['slug'], array( 'default' => $color['default'], 'type' => 'option', 'capability' => 'edit_theme_options' , 'sanitize_callback' => 'cs_sanitize_clean'));
 
     // CONTROLS
     $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $color['slug'], array( 'label' => $color['label'], 'section' => 'colors', 'settings' => $color['slug'] )));
@@ -108,6 +108,7 @@ function pinzolo_customize_register($wp_customize)
 		'default'    => 'Pinzolo',
 		'type'       => 'option',
 		'capability' => 'edit_theme_options',
+		'sanitize_callback' => 'cs_sanitize_clean'
 	) );
 	$wp_customize->add_control( 'header_text', array(
 		'label'      => 'Header Text',
@@ -120,6 +121,7 @@ function pinzolo_customize_register($wp_customize)
 		'default'    => 'Edit me in the Theme Customizer',
 		'type'       => 'option',
 		'capability' => 'edit_theme_options',
+		'sanitize_callback' => 'cs_sanitize_clean'
 	) );
 	$wp_customize->add_control( 'sub_header_text', array(
 		'label'      => 'Sub Header Text',
@@ -131,6 +133,7 @@ function pinzolo_customize_register($wp_customize)
 	$wp_customize->add_setting( "logo", array(
 		'type'       => 'option',
 		'capability' => 'edit_theme_options',
+		'sanitize_callback' => 'cs_sanitize_clean'
 	) );
 	$wp_customize->add_control(  new WP_Customize_Image_Control($wp_customize, 'logo', array(
 		'label'    =>  'Upload a logo',
@@ -143,6 +146,7 @@ function pinzolo_customize_register($wp_customize)
 		'default'    => true,
 		'capability' => 'edit_theme_options',
 		'type'       => 'option',
+		'sanitize_callback' => 'cs_sanitize_clean'
 	) );
 	$wp_customize->add_control( 'border', array(
 		'label'    =>  'Show border / shadow?',
@@ -155,6 +159,7 @@ function pinzolo_customize_register($wp_customize)
 		'default'    => true,
 		'type'       => 'option',
 		'capability' => 'edit_theme_options',
+		'sanitize_callback' => 'cs_sanitize_clean'
 	) );
 	$wp_customize->add_control(  'ajax', array(
 		'label'    =>  'Enable AJAX loading',
@@ -168,6 +173,8 @@ function pinzolo_customize_register($wp_customize)
 // Tell WordPress to run pinzolo_setup() when the 'after_setup_theme' hook is run.
 add_action( 'after_setup_theme', 'pinzolo_setup' );
 function pinzolo_setup(){
+
+	add_theme_support( "title-tag" );
 
 	add_theme_support( 'custom-background', array(
 		// Let WordPress know what our default background color is.

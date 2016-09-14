@@ -14,10 +14,8 @@ Dates in (Day/Month/Year)
 
 To Do
 
-* Add favicon upload option
 * Add social icons in footer
 * Translations
-
 
 ----
 
