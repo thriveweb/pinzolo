@@ -1497,6 +1497,27 @@ footer p a:hover{
 }
 
 
+.social-media-icons{
+	list-style: none;
+	text-align: center;
+	margin: 0;
+	padding: 0;
+}
+
+.social-media-icons li{
+	display: inline-block;
+}
+
+.social-media-icons li a{
+	width: 30px;
+	height: 30px;
+	margin: 5px;
+	border: solid 1px #ECECEC;
+	border-radius: 15px;
+	display: block;
+	line-height: 30px;
+}
+
 /*---------------------------- Load posts  ----------------------------*/
 #pbd-alp-load-posts{
 	text-align: center;

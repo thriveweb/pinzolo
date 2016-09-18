@@ -19,6 +19,11 @@ To Do
 
 ----
 
+(15/9/2016) -  Improvements - Version 1.2.9
+[!] General updates 
+
+----
+
 (30/3/2014) -  Improvements - Version 1.2.8
 [!] Menu tiny nav scroll fix - not 100%
 
