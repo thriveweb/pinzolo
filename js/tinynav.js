@@ -1,12 +1,13 @@
-
-/*! http://tinynav.viljamis.com v1.03 by @viljamis */
+/*! http://tinynav.viljamis.com v1.2 by @viljamis */
 (function ($, window, i) {
   $.fn.tinyNav = function (options) {
 
     // Default settings
     var settings = $.extend({
       'active' : 'selected', // String: Set the "active" class
-      'header' : false // Boolean: Show header instead of the active item
+      'header' : '', // String: Specify text for "header" and show header instead of the active item
+      'indent' : '- ', // String: Specify text for indenting sub-items
+      'label'  : '' // String: sets the <label> text for the <select> (if not set, no label will be added)
     }, options);
 
     return this.each(function () {
@@ -19,47 +20,29 @@
         namespace = 'tinynav',
         namespace_i = namespace + i,
         l_namespace_i = '.l_' + namespace_i,
-        $select = $('<select />').addClass(namespace + ' ' + namespace_i);
-		
-		/* Mod for Pinzolo */
-		 $select.focus(function(e) {
-			 //e.preventDefault();
-			var yPos = window.pageYOffset || document.documentElement.scollTop;
-			setTimeout(function() {window.scrollTo(0, yPos);},0);
-    
-		});
-
+        $select = $('<select/>').attr("id", namespace_i).addClass(namespace + ' ' + namespace_i);
 
       if ($nav.is('ul,ol')) {
 
-        if (settings.header) {
+        if (settings.header !== '') {
           $select.append(
-            $('<option/>').text('Navigation')
+            $('<option/>').text(settings.header)
           );
         }
 
         // Build options
         var options = '';
-		var indent = 0;
-		var indented = ["&nbsp;"];
-		for ( var i = 0; i < 10; i++) {
-			indented.push(indented[indented.length-1]+indented[indented.length-1]);
-		}
-		indented[0] = "";
+
         $nav
           .addClass('l_' + namespace_i)
-          .children('li')
-          .each(buildNavTree=function () {
-            var a = $(this).children('a').first();
-            if(a.length > 0){
-	            options +=
-	              '<option value="' + a.attr('href') + '">' +
-	              indented[indent] + a.text() +
-	              '</option>';
-	              indent++;
-	              $(this).children('ul,ol').children('li').each(buildNavTree);
-	              indent--;
-              }
+          .find('a')
+          .each(function () {
+            options += '<option value="' + $(this).attr('href') + '">';
+            var j;
+            for (j = 0; j < $(this).parents('ul, ol').length - 1; j++) {
+              options += settings.indent;
+            }
+            options += $(this).text() + '</option>';
           });
 
         // Append options into a select
@@ -81,9 +64,17 @@
         // Inject select
         $(l_namespace_i).after($select);
 
-      }
+        // Inject label
+        if (settings.label) {
+          $select.before(
+            $("<label/>")
+              .attr("for", namespace_i)
+              .addClass(namespace + '_label ' + namespace_i + '_label')
+              .append(settings.label)
+          );
+        }
 
-	$('option[value="'+document.location+'"]').attr("selected","selected");
+      }
 
     });
 
