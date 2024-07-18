@@ -35,7 +35,6 @@ jQuery(document).ready(function($) {
 		
 			// Show that we're working.
 			$(this).text('Loading posts...');
-			
 			$('.pbd-alp-placeholder-'+ pageNum).load(nextLink + ' article',
 				function() {
 					
@@ -62,3 +61,4 @@ jQuery(document).ready(function($) {
 		return false;
 	});
 });
+

@@ -12,10 +12,24 @@ Dates in (Day/Month/Year)
 
 ----
 
-To Do
+(26/06/2024) -  Improvements - Version 1.2.11
+[*] Design change
+[!] General updates
 
-* Add social icons in footer
-* Translations
+----
+
+(07/06/2023) -  Improvements - Version 1.2.11
+[!] General updates 
+[*] Fixed internationalisation issue
+[*] Debugged for the deregistering of the deprecated hooks and action
+[*] Updated the blog head template
+[*] Updated the Superfish JS plugin to fix the jQuery.browser deprecation
+[*] Updated the blog template regarding navigation changes
+[*] Updated the social media icons function for the footer
+[*] Updated the AJAX function in the customizer settings
+[*] Updated the styling for the header mega menu navigation
+[*] Reviewed the theme with PHP 8 version
+[*] Fixed other issues 
 
 ----
 
