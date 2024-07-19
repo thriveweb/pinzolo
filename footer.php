@@ -14,7 +14,7 @@
 						<div class="footer_left">
 							<div class="footer_col">
 								<p> &copy; <?php echo date('Y'); ?> Pinzolo Theme</p>
-								<p> Made on the Gold Coast by <a href="https://thriveweb.com.au/" target="_blank">THRIVE</a></p>
+								<p> Made on the Gold Coast by <a href='https://thriveweb.com.au/' target='_blank'>THRIVE</a></p>
 								<p class="powered_by"> Powered by <a href="http://wordpress.org/" title="WordPress">WordPress</a></p>
 							</div>
 							<div class="footer_col">

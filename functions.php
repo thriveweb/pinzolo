@@ -49,7 +49,7 @@ function pinzolo_custom_options() {
 		
 		article .dets h2 a, h1, h2, h3, h4, h5, h6{ color:  '. $header_color .' ;  }
 		body.dark {
-		    background: #000;
+		    background: #000 !important;
 		}
 	</style>
 	';
@@ -144,7 +144,7 @@ function pinzolo_customize_register($wp_customize){
         'sanitize_callback' => 'sanitize_hex_color'
     ));
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'dark_link_color', array(
-        'label' => __('Link Color', 'text-domain'),
+        'label' => __('Link Color', 'pinzolo'),
         'section' => 'colors',
         'settings' => 'dark_link_color',
         'active_callback' => function () {
@@ -160,7 +160,7 @@ function pinzolo_customize_register($wp_customize){
         'sanitize_callback' => 'sanitize_hex_color'
     ));
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'dark_link_hover_color', array(
-        'label' => __('Link Hover Color', 'text-domain'),
+        'label' => __('Link Hover Color', 'pinzolo'),
         'section' => 'colors',
         'settings' => 'dark_link_hover_color',
         'active_callback' => function () {
@@ -176,7 +176,7 @@ function pinzolo_customize_register($wp_customize){
         'sanitize_callback' => 'sanitize_hex_color'
     ));
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'dark_head_color', array(
-        'label' => __('H1, H2, H3, H4 Color', 'text-domain'),
+        'label' => __('H1, H2, H3, H4 Color', 'pinzolo'),
         'section' => 'colors',
         'settings' => 'dark_head_color',
         'active_callback' => function () {
@@ -192,7 +192,7 @@ function pinzolo_customize_register($wp_customize){
         'sanitize_callback' => 'sanitize_hex_color'
     ));
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'dark_header_text_color', array(
-        'label' => __('Paragraph Color', 'text-domain'),
+        'label' => __('Paragraph Color', 'pinzolo'),
         'section' => 'colors',
         'settings' => 'dark_header_text_color',
         'active_callback' => function () {
@@ -281,8 +281,8 @@ $wp_customize->add_control('ajax', array(
     'section' => 'ajax_navigation',
     'type'    => 'radio',
     'choices' => array(
-            '_loadmore' => __('Load More', 'text-domain'),
-            '_pagination'  => __('Pagination', 'text-domain'),
+            '_loadmore' => __('Load More', 'pinzolo'),
+            '_pagination'  => __('Pagination', 'pinzolo'),
         ),
 ));
 
@@ -311,10 +311,10 @@ $wp_customize->add_control('pagination', array(
     $wp_customize->add_control('theme_color_scheme', array(
         'type'    => 'radio',
         'section' => 'colors',
-        'label'   => __('Select Theme Mode', 'text-domain'),
+        'label'   => __('Select Theme Mode', 'pinzolo'),
         'choices' => array(
-            'light' => __('Light', 'text-domain'),
-            'dark'  => __('Dark', 'text-domain'),
+            'light' => __('Light', 'pinzolo'),
+            'dark'  => __('Dark', 'pinzolo'),
         ),
     ));
 
@@ -329,12 +329,32 @@ $wp_customize->add_control('pagination', array(
 add_action( 'after_setup_theme', 'pinzolo_setup' );
 function pinzolo_setup(){
 
+	add_theme_support('wp-block-styles');
 	add_theme_support( "title-tag" );
-
 	add_theme_support( 'automatic-feed-links' );
+	add_theme_support( "responsive-embeds" );
+	add_theme_support( "align-wide" );
+	add_theme_support( 'editor-styles' );
+	add_theme_support( 'core-block-patterns' );
+	add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption', 'style', 'script' ) ); 
+	add_theme_support( "custom-logo", array(
+		'height'               => 100,
+		'width'                => 400,
+		'flex-height'          => true,
+		'flex-width'           => true,
+		'header-text'          => array( 'site-title', 'site-description' ),
+		'unlink-homepage-logo' => true, 
+	) );
 
-	///////////////////////////////////////////////////////
-	// Add support for custom headers.
+
+	$args = array(
+        'default-color' => 'ffffff', 
+        'default-image' => '', 
+        'wp-head-callback' => '_custom_background_cb', 
+    );
+    add_theme_support('custom-background', $args);
+
+    	// Add support for custom headers.
 	$args = array(
 		'width'         => 1400,
 		'height'        => 260,
@@ -349,25 +369,7 @@ function pinzolo_setup(){
 	add_theme_support( 'post-thumbnails' );
 	add_image_size( 'page_header', 1400, 260, false );
 	add_image_size( 'portfolio', 250, 250, true );
-
 }
-// added theme support
-add_theme_support( "wp-block-styles" );
-add_theme_support( "responsive-embeds" );
-add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption', 'style', 'script' ) ); 
-add_theme_support( "custom-logo", array(
-	'height'               => 100,
-	'width'                => 400,
-	'flex-height'          => true,
-	'flex-width'           => true,
-	'header-text'          => array( 'site-title', 'site-description' ),
-	'unlink-homepage-logo' => true, 
-) );
-
-add_theme_support( "align-wide" );
-
-
-
 
 add_editor_style();
 the_post_thumbnail();
@@ -581,3 +583,31 @@ function pinzolo_pbd_alp_init() {
 	}
 }
 add_action('template_redirect', 'pinzolo_pbd_alp_init');
+
+add_action( 'init', 'pinzolo_patterns' );
+function pinzolo_patterns() {
+	/* Register Pattern */
+	register_block_pattern(
+		'pinzolo-title',
+		array(
+			'title'         => __( 'Creativetech Title', 'pinzolo' ),
+			'description'   => __( 'This is Creativetech Pattern', 'pinzolo' ),
+			'content'       => '<h2><center>This is Pinzolo Theme</center></h2>',
+			'categories'    => array( 'text', 'pinzolo' ),
+			'keywords'      => array( 'cta', 'pinzolo'),
+			'viewportWidth' => 400,
+		)
+	);
+}
+
+if ( function_exists( 'register_block_style' ) ) {
+    register_block_style(
+        'core/quote',
+        array(
+            'name'         => 'blue-quote',
+            'label'        => __( 'Blue Quote', 'pinzolo' ),
+            'is_default'   => true,
+            'inline_style' => '.wp-block-quote.is-style-blue-quote { color: blue; }',
+        )
+    );
+}
