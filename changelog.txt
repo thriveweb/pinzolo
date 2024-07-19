@@ -10,11 +10,14 @@ Changelog Legend:
 
 Dates in (Day/Month/Year)
 
+
+(19/07/2024) -  Improvements - Version 2.0.1
+[!] Layout improvements
+
 ----
 
-(26/06/2024) -  Improvements - Version 1.2.11
-[*] Design change
-[!] General updates
+(26/06/2024) -  Improvements - Version 2.0.0
+[+] Major update with new design
 
 ----
 
