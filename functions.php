@@ -612,20 +612,6 @@ if ( function_exists( 'register_block_style' ) ) {
     );
 }
 
-// Add a favicon to the theme
-/*function add_favicon() {
-    echo '<link rel="shortcut icon" href="' . get_template_directory_uri() . '/images/favicon.ico" />';
-}
-add_action('wp_head', 'add_favicon');*/
 
-
-
-
-// Function to allow .ico file uploads
-/*function add_ico_to_upload_mimes( $mimes ) {
-    $mimes['ico'] = '';
-    return $mimes;
-}
-add_filter( 'upload_mimes', 'add_ico_to_upload_mimes' );*/
 
 
