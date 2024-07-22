@@ -6,7 +6,6 @@ function pinzolo_scripts() {
 	wp_enqueue_script('jquery');
 	
 	wp_enqueue_script('superfish', 		get_template_directory_uri() . '/js/superfish/dist/js/superfish.js',array('jquery'),time());
-	// wp_enqueue_script('formalize', 		get_template_directory_uri() . '/js/jquery.formalize.min.js',array('jquery'),time());
 	wp_enqueue_script('tinynav', 	 	get_template_directory_uri() . '/js/tinynav.js',array('jquery'),time());
 	wp_enqueue_script('pinzolo-script', get_template_directory_uri() . '/js/pinzolo.js',array('jquery'),time());
 	
@@ -68,20 +67,7 @@ endif;
 }
 add_action('wp_head', 'pinzolo_custom_options');
 
-
 if ( is_singular() ) wp_enqueue_script( 'comment-reply' );
-
-// add ie conditional html5 shim to header
-// function add_ie_html5_shim () {
-// 	global $is_IE;
-// 	if ($is_IE){
-//    		echo '	<!--[if lt IE 9]>
-//     				<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-// 				<![endif]-->';
-//     }
-// }
-// add_action('wp_head', 'add_ie_html5_shim');
-
 
 ///////////////////////////////////////////////////////
 function pinzolo_search_form( $form ) {
@@ -98,7 +84,6 @@ function pinzolo_search_form( $form ) {
 	return $form;
 }
 add_filter( 'get_search_form', 'pinzolo_search_form' );
-
 
 
 ///////////////////////////////////////////////////////
@@ -123,7 +108,7 @@ function pinzolo_customize_register($wp_customize){
 	foreach($colors as $color)
 	{
     	// SETTINGS
-		$wp_customize->add_setting( $color['slug'], array( 'default' => $color['default'], 'type' => 'option', 'capability' => 'edit_theme_options' , 'sanitize_callback' => 'sanitize_hex_color'));
+	$wp_customize->add_setting( $color['slug'], array( 'default' => $color['default'], 'type' => 'option', 'capability' => 'edit_theme_options' , 'sanitize_callback' => 'sanitize_hex_color'));
 
     	// CONTROLS
 		$wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, $color['slug'], array(
@@ -285,19 +270,6 @@ $wp_customize->add_control('ajax', array(
             '_pagination'  => __('Pagination', 'pinzolo'),
         ),
 ));
-
-/*$wp_customize->add_setting("pagination", array(
-    'default'           => true,
-    'type'              => 'option',
-    'capability'        => 'edit_theme_options',
-    'sanitize_callback' => 'sanitize_text_field'
-));
-
-$wp_customize->add_control('pagination', array(
-    'label'   => 'Enable Pagination',
-    'section' => 'ajax_navigationgation',
-    'type'    => 'checkbox', // Changed to checkbox for enabling/disabling
-));*/
 
 
 	// Remove "Display Site Title and Tagline" checkbox
