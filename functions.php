@@ -5,10 +5,7 @@
 function pinzolo_scripts() {
 	wp_enqueue_script('jquery');
 	
-	wp_enqueue_script('superfish', 		get_template_directory_uri() . '/js/superfish/dist/js/superfish.js',array('jquery'),time());
-	// wp_enqueue_script('formalize', 		get_template_directory_uri() . '/js/jquery.formalize.min.js',array('jquery'),time());
-	wp_enqueue_script('tinynav', 	 	get_template_directory_uri() . '/js/tinynav.js',array('jquery'),time());
-	wp_enqueue_script('pinzolo-script', get_template_directory_uri() . '/js/pinzolo.js',array('jquery'),time());
+	wp_enqueue_script('pinzolo-script', get_template_directory_uri() . '/js/pinzolo.js', array(), filemtime(get_stylesheet_directory() . '/js/pinzolo.js'), true);
 	
 	wp_enqueue_style('opensans', 	 	'https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,300,600,700');
 	wp_enqueue_style('font-awesome', 	get_template_directory_uri() . '/css/font-awesome.min.css');
@@ -32,7 +29,6 @@ function pinzolo_custom_options() {
 		$header_color = get_option('dark_head_color', '#fff');
 	}
 	$border = get_option('border');
-	$ajax = get_option('ajax');
 
 	echo'
 	<style type="text/css" id="custom-colour-css">
@@ -51,37 +47,23 @@ function pinzolo_custom_options() {
 		body.dark {
 		    background: #000 !important;
 		}
-	</style>
-	';
+	</style>';
 
 	if( !$border ) :
 		echo'
 		<style type="text/css" id="custom-colour-css">
 		#wrapper_bg{
-		-webkit-box-shadow: 0px 0px 0px black;
-		-moz-box-shadow: 0px 0px 0px black;
-		box-shadow: 0px 0px 0px black;
-	}
-	</style>
-	';
+			-webkit-box-shadow: 0px 0px 0px black;
+			-moz-box-shadow: 0px 0px 0px black;
+			box-shadow: 0px 0px 0px black;
+		}
+	</style>';
 endif;
 }
 add_action('wp_head', 'pinzolo_custom_options');
 
 
 if ( is_singular() ) wp_enqueue_script( 'comment-reply' );
-
-// add ie conditional html5 shim to header
-// function add_ie_html5_shim () {
-// 	global $is_IE;
-// 	if ($is_IE){
-//    		echo '	<!--[if lt IE 9]>
-//     				<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-// 				<![endif]-->';
-//     }
-// }
-// add_action('wp_head', 'add_ie_html5_shim');
-
 
 ///////////////////////////////////////////////////////
 function pinzolo_search_form( $form ) {
@@ -125,15 +107,15 @@ function pinzolo_customize_register($wp_customize){
     	// SETTINGS
 		$wp_customize->add_setting( $color['slug'], array( 'default' => $color['default'], 'type' => 'option', 'capability' => 'edit_theme_options' , 'sanitize_callback' => 'sanitize_hex_color'));
 
-    	// CONTROLS
+		// CONTROLS
 		$wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, $color['slug'], array(
-            'label' => $color['label'],
-            'section' => 'colors',
-            'settings' => $color['slug'],
-            'active_callback' => function () use ($color) {
-                return get_theme_mod('theme_color_scheme', 'light') == 'light';
-            }
-        )));
+	        'label' => $color['label'],
+	        'section' => 'colors',
+	        'settings' => $color['slug'],
+	        'active_callback' => function () use ($color) {
+	            return get_theme_mod('theme_color_scheme', 'light') == 'light';
+	        }
+	    ) ) );
 	}
 
 	// Add dark versions of Link Color 
@@ -150,7 +132,7 @@ function pinzolo_customize_register($wp_customize){
         'active_callback' => function () {
             return get_theme_mod('theme_color_scheme', 'light') == 'dark';
         }
-    )));
+    ) ) );
 
     // Add dark versions of Link Hover Color 
     $wp_customize->add_setting('dark_link_hover_color', array(
@@ -182,7 +164,7 @@ function pinzolo_customize_register($wp_customize){
         'active_callback' => function () {
             return get_theme_mod('theme_color_scheme', 'light') == 'dark';
         }
-    )));
+    ) ) );
 
     // Add dark text color setting
     $wp_customize->add_setting('dark_header_text_color', array(
@@ -198,7 +180,7 @@ function pinzolo_customize_register($wp_customize){
         'active_callback' => function () {
             return get_theme_mod('theme_color_scheme', 'light') == 'dark';
         }
-    )));
+    ) ) );
 
 	// Add Header Text
 	$wp_customize->add_setting( 'header_text', array(
@@ -247,7 +229,6 @@ function pinzolo_customize_register($wp_customize){
 	$wp_customize->add_control(  new WP_Customize_Image_Control($wp_customize, 'darklogo', array(
 		'label'    =>  'Upload a dark theme logo',
 		'section'  => 'title_tagline',
-		// 'settings'   => 'dark_logo',
 	) ) );
 
 
@@ -265,40 +246,26 @@ function pinzolo_customize_register($wp_customize){
 	) );
 
 	// Add AJAX load option
-$wp_customize->add_section('ajax_navigation', array(
-    'title' => 'Ajax Navigation'
-));
+	$wp_customize->add_section('ajax_navigation', array(
+	    'title' => 'Ajax Navigation'
+	));
 
-$wp_customize->add_setting("ajax", array(
-    'default'           => '_loadmore',
-    'type'              => 'option',
-    'capability'        => 'edit_theme_options',
-    'sanitize_callback' => 'sanitize_text_field'
-));
+	$wp_customize->add_setting("ajax", array(
+	    'default'           => '_loadmore',
+	    'type'              => 'option',
+	    'capability'        => 'edit_theme_options',
+	    'sanitize_callback' => 'sanitize_text_field'
+	));
 
-$wp_customize->add_control('ajax', array(
-    'label'   => 'Enable AJAX loading',
-    'section' => 'ajax_navigation',
-    'type'    => 'radio',
-    'choices' => array(
-            '_loadmore' => __('Load More', 'pinzolo'),
-            '_pagination'  => __('Pagination', 'pinzolo'),
-        ),
-));
-
-/*$wp_customize->add_setting("pagination", array(
-    'default'           => true,
-    'type'              => 'option',
-    'capability'        => 'edit_theme_options',
-    'sanitize_callback' => 'sanitize_text_field'
-));
-
-$wp_customize->add_control('pagination', array(
-    'label'   => 'Enable Pagination',
-    'section' => 'ajax_navigationgation',
-    'type'    => 'checkbox', // Changed to checkbox for enabling/disabling
-));*/
-
+	$wp_customize->add_control('ajax', array(
+	    'label'   => 'Enable AJAX loading',
+	    'section' => 'ajax_navigation',
+	    'type'    => 'radio',
+	    'choices' => array(
+	            '_loadmore' => __('Load More', 'pinzolo'),
+	            '_pagination'  => __('Pagination', 'pinzolo'),
+	        ),
+	));
 
 	// Remove "Display Site Title and Tagline" checkbox
 	$wp_customize->remove_control('display_header_text');
@@ -318,8 +285,6 @@ $wp_customize->add_control('pagination', array(
         ),
     ));
 
-    
- 
     $wp_customize->remove_control('header_textcolor');
 
 }
@@ -330,10 +295,10 @@ add_action( 'after_setup_theme', 'pinzolo_setup' );
 function pinzolo_setup(){
 
 	add_theme_support('wp-block-styles');
-	add_theme_support( "title-tag" );
+	add_theme_support( 'title-tag' );
 	add_theme_support( 'automatic-feed-links' );
-	add_theme_support( "responsive-embeds" );
-	add_theme_support( "align-wide" );
+	add_theme_support( 'responsive-embeds' );
+	add_theme_support( 'align-wide' );
 	add_theme_support( 'editor-styles' );
 	add_theme_support( 'core-block-patterns' );
 	add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form', 'gallery', 'caption', 'style', 'script' ) ); 
@@ -371,8 +336,7 @@ function pinzolo_setup(){
 	add_image_size( 'portfolio', 250, 250, true );
 }
 
-add_editor_style();
-the_post_thumbnail();
+
 
 ///////////////////////////////////////////////////////
 // Registers a dynamic sidebar.
@@ -394,6 +358,7 @@ function pinzolo_register_sidebars(){
 add_action('after_setup_theme', 'register_custom_menu');
 function register_custom_menu() {
 	register_nav_menu('top', 'Top Menu');
+	add_editor_style();
 }
 
 //to show a home link
@@ -413,7 +378,6 @@ function pinzolo_SearchFilter($query) {
 	return $query;
 }
 //add_filter('pre_get_posts','pinzolo_SearchFilter');
-
 
 ///////////////////////////////////////////////////////
 // Social links
@@ -527,8 +491,8 @@ function pinzolo_comment($comment, $args, $depth) {
 			<?php endif; ?>
 
 		</div>
-		<?php
-	}
+	</li>
+	<?php } 
 //Note the lack of a trailing </li>. WordPress will add it itself once it's done listing any children and whatnot.
 
 
@@ -597,21 +561,18 @@ function pinzolo_patterns() {
 			'keywords'      => array( 'cta', 'pinzolo'),
 			'viewportWidth' => 400,
 		)
-	);
-}
+	); }
 
-if ( function_exists( 'register_block_style' ) ) {
-    register_block_style(
-        'core/quote',
-        array(
-            'name'         => 'blue-quote',
-            'label'        => __( 'Blue Quote', 'pinzolo' ),
-            'is_default'   => true,
-            'inline_style' => '.wp-block-quote.is-style-blue-quote { color: blue; }',
-        )
-    );
-}
-
-
+	if ( function_exists( 'register_block_style' ) ) {
+	    register_block_style(
+	        'core/quote',
+	        array(
+	            'name'         => 'blue-quote',
+	            'label'        => __( 'Blue Quote', 'pinzolo' ),
+	            'is_default'   => true,
+	            'inline_style' => '.wp-block-quote.is-style-blue-quote { color: blue; }',
+	        )
+	    );
+	}
 
 

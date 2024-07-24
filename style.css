@@ -5,11 +5,10 @@ Author: Dean Oakley
 Description: Minimal responsive WordPress theme. Easy to use theme customisation options in the new Theme Customizer. Responsive layout for mobile and widescreen browsing. Fixed header menu. Ajax loading for blog posts. Designed by Dean Oakley @ Thrive on the Gold Coast, Australia.
 Text Domain: pinzolo
 Author URI: http://deanoakley.com/
-Version: 2.0.1
-Requires at least: 6.0
+Version: 2.0.0
+Requires at least: 5.0
 Tested up to: 8.3
-Requires PHP: 7.4
-
+Requires PHP: 7.0
 Tags:  custom-background, custom-header, featured-images, one-column, threaded-comments, right-sidebar, sticky-post
 License: GNU General Public License
 License URI: license.txt
@@ -533,6 +532,13 @@ figure.wp-block-image img {
     border-radius: 12px;
 }
 
+.menu-item-has-children:hover .sub-menu {
+    opacity: 1;
+    pointer-events: all;
+}
+
+
+
 @media screen and (max-width: 780px) {
 
 	.admin-bar #navwrap{
@@ -643,8 +649,8 @@ single-gallery {
 
 
 /*** dropit ***/
-nav ul li ul{
-	position: absolute;
+nav ul li ul {
+    position: absolute;
     top: 37px;
     margin: 0;
     padding: 0;
@@ -652,12 +658,13 @@ nav ul li ul{
     width: 170px;
     z-index: 100;
     height: auto;
-    visibility: hidden;
     left: -15px;
     background-color: #fff;
     border: 1px solid;
     border-color: black;
     border-radius: 12px;
+    opacity: 0;
+    pointer-events: none;
 }
 body.dark nav ul li ul{
 	border-color: #fff;
@@ -728,10 +735,11 @@ nav ul li ul li.current_page_item a:hover{
 	width: 17px;
 	height: 13px;
 	background-image: url(images/drop.svg);
-	background-repeat: no-repeat;
-	position: absolute;
-	right: -19px;
-	top: 19px;
+    background-repeat: no-repeat;
+    position: relative;
+    right: -2px;
+    top: 2px;
+    display: inline-block;
 }
 
 nav ul ul .sf-sub-indicator{

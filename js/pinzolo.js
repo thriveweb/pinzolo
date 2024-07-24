@@ -11,8 +11,6 @@ jQuery(document).ready(function($) {
 		}
 	});
 	
-	//tinyNav
-    jQuery('#menuUl').tinyNav();
     
 	jQuery('html').addClass('js');
 	
@@ -42,7 +40,7 @@ jQuery(document).ready(function($) {
 	    });
 	}else{
 
-		jQuery('nav ul').superfish(); 
+		//jQuery('nav ul').superfish(); 
 
 	}
     
