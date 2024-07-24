@@ -1,14 +1,33 @@
 jQuery(document).ready(function($) {
-    // Add dropdown indicator to menu items with children
-    $('.menu-item-has-children > a').append('<span class="sf-sub-indicator"></span>');
+					
+	
+	jQuery('<span class="sf-sub-indicator"></span>').appendTo('.menu-item-has-children > a');
+	
+	//clear search on click
+	defaultValue = jQuery('#Searchform').val();  
+	jQuery('#Searchform').click(function() {
+		if( this.value == defaultValue ) {
+			jQuery(this).val("");
+		}
+	});
+	
+    
+	jQuery('html').addClass('js');
+	
 
-    // Clear search input on click
-    var defaultSearchValue = $('#Searchform').val();
-    $('#Searchform').click(function() {
-        if (this.value === defaultSearchValue) {
-            $(this).val('');
-        }
-    });
+	jQuery(window).scroll(function() {
+	    var scroll = jQuery(window).scrollTop();
+
+	    if (scroll > 0) {
+	    	jQuery('#navwrap').addClass('scrolled');
+	    } else {
+	    	jQuery('#navwrap').removeClass('scrolled');
+	    }
+	});
+
+	jQuery(".toggalnav").click(function(){
+        jQuery("body").toggleClass("show_menu");
+  });
 
     // Initialize TinyNav for responsive menu
     $('#menuUl').tinyNav();
@@ -16,10 +35,7 @@ jQuery(document).ready(function($) {
     // Add 'js' class to HTML element
     $('html').addClass('js');
 
-    // Add 'scrolled' class to navigation when scrolling
-    $(window).scroll(function() {
-        $('#navwrap').toggleClass('scrolled', $(window).scrollTop() > 0);
-    });
+		//jQuery('nav ul').superfish(); 
 
     // Toggle menu on mobile
     $('.toggalnav').click(function() {
