@@ -1,7 +1,9 @@
 <?php
 
-///////////////////////////////////////////////////////
-// Header stuffs
+/**
+ * Header stuffs
+ * 
+ * */
 function pinzolo_scripts() {
 	wp_enqueue_script('jquery');
 	
@@ -11,24 +13,16 @@ function pinzolo_scripts() {
 	wp_enqueue_style('font-awesome', 	get_template_directory_uri() . '/css/font-awesome.min.css');
 
 
-/**
- * Enqueue scripts and styles for the theme
- */
-function pinzolo_scripts() {
-    wp_enqueue_script('jquery');
-    
-    wp_enqueue_script('superfish', get_template_directory_uri() . '/js/superfish/dist/js/superfish.js', array('jquery'), time());
-    wp_enqueue_script('tinynav', get_template_directory_uri() . '/js/tinynav.js', array('jquery'), time());
-    wp_enqueue_script('pinzolo-script', get_template_directory_uri() . '/js/pinzolo.js', array('jquery'), time());
-    
-    wp_enqueue_style('opensans', 'https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,300,600,700');
-    wp_enqueue_style('font-awesome', get_template_directory_uri() . '/css/font-awesome.min.css');
 }
-add_action('wp_enqueue_scripts', 'pinzolo_scripts');
+add_action( 'wp_enqueue_scripts', 'pinzolo_scripts' );
+
 
 /**
- * Apply custom styles based on theme options
+ * 
+ * 
+ * Styles from customizer
  */
+add_action('wp_head', 'pinzolo_custom_options');
 function pinzolo_custom_options() {
 	if( get_theme_mod('theme_color_scheme') == "light"){
 		$link_color = get_option('link_color', '#000');
@@ -73,19 +67,17 @@ function pinzolo_custom_options() {
 	</style>';
 endif;
 }
-add_action('wp_head', 'pinzolo_custom_options');
 
-/**
- * Customize the search form
- */
-function pinzolo_search_form($form) {
-    $search_value = !empty($s) ? esc_attr($s, 1) : 'search';
-    $home_url = esc_url(home_url('/'));
 
 
 if ( is_singular() ) wp_enqueue_script( 'comment-reply' );
 
-///////////////////////////////////////////////////////
+
+/**
+ * Add Pinzolo Search Form
+ * 
+ * */
+add_filter( 'get_search_form', 'pinzolo_search_form' );
 function pinzolo_search_form( $form ) {
 
 	if(!empty($s)) $svalue =  esc_attr($s, 1);
@@ -97,36 +89,36 @@ function pinzolo_search_form( $form ) {
 	<input id="Searchform" type="text" class="textfield wpcf7-text" name="s" size="24" value="' . $svalue . '" />
 	</form>';
 
-
-    return $form;
+	return $form;
 }
-add_filter('get_search_form', 'pinzolo_search_form');
 
-// Set the content width
-if (!isset($content_width)) {
-    $content_width = 860;
-}
+
 
 /**
- * Customize theme options in the WordPress Customizer
- */
-function pinzolo_customize_register($wp_customize) {
-    // Add color settings
-    $colors = array(
-        array('slug' => 'link_color', 'default' => '#000000', 'label' => 'Link Color'),
-        array('slug' => 'link_hover_color', 'default' => '#000000', 'label' => 'Link Hover Color'),
-        array('slug' => 'head_color', 'default' => '#000000', 'label' => 'H1, H2, H3 Color'),
-        array('slug' => 'all_text_color', 'default' => '#000000', 'label' => 'Text Color')
-    );
+ * Set the content width based on the theme's design and stylesheet.
+ * 
+ * */
+if ( ! isset( $content_width ) )
+	$content_width = 860;
 
-    foreach ($colors as $color) {
-        // Add color settings and controls
-        $wp_customize->add_setting($color['slug'], array(
-            'default' => $color['default'],
-            'type' => 'option',
-            'capability' => 'edit_theme_options',
-            'sanitize_callback' => 'sanitize_hex_color'
-        ));
+/**
+ * Add more colour selectors
+ * https://codex.wordpress.org/Theme_Customization_API
+ * 
+ */
+add_action( 'customize_register', 'pinzolo_customize_register' );
+function pinzolo_customize_register($wp_customize){
+
+	$colors = array();
+	$colors[] = array( 'slug'=>'link_color', 'default' => '#000000', 'label' => 'Link Color' );
+	$colors[] = array( 'slug'=>'link_hover_color', 'default' => '#000000', 'label' => 'Link Hover Color' );
+	$colors[] = array( 'slug'=>'head_color', 'default' => '#000000', 'label' => 'H1, H2, H3 Color' );
+	$colors[] = array( 'slug'=>'all_text_color', 'default' => '#000000', 'label' => 'Text Color' );
+
+	foreach($colors as $color)
+	{
+    	// SETTINGS
+		$wp_customize->add_setting( $color['slug'], array( 'default' => $color['default'], 'type' => 'option', 'capability' => 'edit_theme_options' , 'sanitize_callback' => 'sanitize_hex_color'));
 
 		// CONTROLS
 		$wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, $color['slug'], array(
@@ -160,11 +152,26 @@ function pinzolo_customize_register($wp_customize) {
         'default' => '#fff',
         'type' => 'option',
         'capability' => 'edit_theme_options',
-        'type' => 'option',
-        'sanitize_callback' => 'sanitize_text_field'
+        'sanitize_callback' => 'sanitize_hex_color'
     ));
-    $wp_customize->add_control('border', array(
-        'label' => 'Show border / shadow?',
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'dark_link_hover_color', array(
+        'label' => __('Link Hover Color', 'pinzolo'),
+        'section' => 'colors',
+        'settings' => 'dark_link_hover_color',
+        'active_callback' => function () {
+            return get_theme_mod('theme_color_scheme', 'light') == 'dark';
+        }
+    )));
+
+	// Add dark versions of H1, H2, H3 Color
+	$wp_customize->add_setting('dark_head_color', array(
+        'default' => '#fff',
+        'type' => 'option',
+        'capability' => 'edit_theme_options',
+        'sanitize_callback' => 'sanitize_hex_color'
+    ));
+    $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'dark_head_color', array(
+        'label' => __('H1, H2, H3, H4 Color', 'pinzolo'),
         'section' => 'colors',
         'settings' => 'dark_head_color',
         'active_callback' => function () {
@@ -273,31 +280,36 @@ function pinzolo_customize_register($wp_customize) {
 	        ),
 	));
 
-    // Add theme color scheme option
+	// Remove "Display Site Title and Tagline" checkbox
+	$wp_customize->remove_control('display_header_text');
+
+	// Added light and Dark Mode option
     $wp_customize->add_setting('theme_color_scheme', array(
-        'default' => 'light',
+        'default'           => 'light',
         'sanitize_callback' => 'sanitize_text_field',
     ));
     $wp_customize->add_control('theme_color_scheme', array(
-        'type' => 'radio',
+        'type'    => 'radio',
         'section' => 'colors',
-        'label' => __('Select Theme Mode', 'pinzolo'),
+        'label'   => __('Select Theme Mode', 'pinzolo'),
         'choices' => array(
             'light' => __('Light', 'pinzolo'),
-            'dark' => __('Dark', 'pinzolo'),
+            'dark'  => __('Dark', 'pinzolo'),
         ),
     ));
 
     $wp_customize->remove_control('header_textcolor');
-}
-add_action('customize_register', 'pinzolo_customize_register');
 
-///////////////////////////////////////////////////////
-// Tell WordPress to run pinzolo_setup() when the 'after_setup_theme' hook is run.
+}
+
+/**
+ * Tell WordPress to run pinzolo_setup() when the 'after_setup_theme' hook is run.
+ * 
+ */
 add_action( 'after_setup_theme', 'pinzolo_setup' );
 function pinzolo_setup(){
 
-	add_theme_support('wp-block-styles');
+	add_theme_support( 'wp-block-styles' );
 	add_theme_support( 'title-tag' );
 	add_theme_support( 'automatic-feed-links' );
 	add_theme_support( 'responsive-embeds' );
@@ -322,7 +334,7 @@ function pinzolo_setup(){
     );
     add_theme_support('custom-background', $args);
 
-    	// Add support for custom headers.
+    // Add support for custom headers.
 	$args = array(
 		'width'         => 1400,
 		'height'        => 260,
@@ -332,17 +344,15 @@ function pinzolo_setup(){
 		'default-image' => get_template_directory_uri() . '/header/pinzolo.jpg',
 	);
 	add_theme_support( 'custom-header', $args );
-
-	///////////////////////////////////////////////////////
 	add_theme_support( 'post-thumbnails' );
 	add_image_size( 'page_header', 1400, 260, false );
 	add_image_size( 'portfolio', 250, 250, true );
 }
 
-
-
-///////////////////////////////////////////////////////
-// Registers a dynamic sidebar.
+/**
+ * Registers a dynamic sidebar.
+ * 
+ */
 add_action( 'widgets_init', 'pinzolo_register_sidebars' );
 function pinzolo_register_sidebars(){
 
@@ -356,8 +366,10 @@ function pinzolo_register_sidebars(){
 
 }
 
-///////////////////////////////////////////////////////
-// Custom menu
+/**
+ * Custom menu
+ * 
+ */
 add_action('after_setup_theme', 'register_custom_menu');
 function register_custom_menu() {
 	register_nav_menu('top', 'Top Menu');
@@ -365,70 +377,115 @@ function register_custom_menu() {
 }
 
 
-    // Add custom background support
-    add_theme_support('custom-background', array(
-        'default-color' => 'ffffff',
-        'default-image' => '',
-        'wp-head-callback' => '_custom_background_cb',
-    ));
-
-    // Add custom header support
-    add_theme_support('custom-header', array(
-        'width' => 1400,
-        'height' => 260,
-        'flex-width' => true,
-        'flex-height' => true,
-        'default-text-color' => '000000',
-        'default-image' => get_template_directory_uri() . '/header/pinzolo.jpg',
-    ));
-
-    // Add post thumbnail support
-    add_theme_support('post-thumbnails');
-    add_image_size('page_header', 1400, 260, false);
-    add_image_size('portfolio', 250, 250, true);
+/**
+ * to show a home link
+ * 
+ */
+function pinzolo_page_menu_args( $args ) {
+	$args['show_home'] = true;
+	return $args;
 }
+add_filter( 'wp_page_menu_args', 'pinzolo_page_menu_args' );
 
+// Search only posts
+function pinzolo_SearchFilter($query) {
+	if ($query->is_search) {
+		$query->set('post_type', 'post');
+	}
+	return $query;
+}
 //add_filter('pre_get_posts','pinzolo_SearchFilter');
 
-///////////////////////////////////////////////////////
 // Social links
 function my_customizer_social_media_array() {
-// Add editor styles
-add_editor_style();
+
+	/* store social site names in array */
+	$social_sites = array( 'Facebook', 'Linkedin', 'X', 'Flickr', 'Pinterest', 'Youtube', 'Tumblr', 'Dribbble', 'RSS', 'Instagram', 'Email');
+
+	return $social_sites;
+}
 
 /**
- * Register sidebar
- */
-function pinzolo_register_sidebars() {
-    register_sidebar(array(
-        'name' => 'Page Sidebar',
-        'id' => 'Page_Sidebar',
-        'before_widget' => '<div class="sidebar_widget">',
-        'after_widget' => '</div>',
-        'before_title' => '<h3>',
-        'after_title' => '</h3>'
-    ));
-}
-add_action('widgets_init', 'pinzolo_register_sidebars');
+*
+* add settings to create various social media text areas. 
+*/
+add_action('customize_register', 'my_add_social_sites_customizer');
 
-/**
- * Register custom menu
- */
-function register_custom_menu() {
-    register_nav_menu('top', 'Top Menu');
-}
-add_action('after_setup_theme', 'register_custom_menu');
+function my_add_social_sites_customizer($wp_customize) {
 
-/**
- * Add home link to page menu
- */
-function pinzolo_page_menu_args($args) {
-    $args['show_home'] = true;
-    return $args;
-}
-add_filter('wp_page_menu_args', 'pinzolo_page_menu_args');
+	$wp_customize->add_section( 'my_social_settings', array(
+		'title'    => __('Social Media Icons', 'pinzolo'),
+		'priority' => 35,
+	) );
 
-///////////////////////////////////////////////////////
+	$social_sites = my_customizer_social_media_array();
+	$priority = 5;
+
+	foreach($social_sites as $social_site) {
+
+		$wp_customize->add_setting( "$social_site", array(
+			'type'              => 'theme_mod',
+			'capability'        => 'edit_theme_options',
+			'sanitize_callback' => 'esc_url_raw'
+		) );
+
+		$wp_customize->add_control( $social_site, array(
+			'label'    => $social_site." url:",
+			'section'  => 'my_social_settings',
+			'type'     => 'text',
+			'priority' => $priority,
+		) );
+
+		$priority = $priority + 5;
+	}
+}
+
+
+/** 
+*
+* takes user input from the customizer and outputs linked social media icons 
+*/
+function my_social_media_icons() {
+
+	$social_sites = my_customizer_social_media_array();
+
+	/* any inputs that aren't empty are stored in $active_sites array */
+	foreach($social_sites as $social_site) {
+		if( strlen( get_theme_mod( $social_site ) ) > 0 ) {
+			$active_sites[] = $social_site;
+		}
+	}
+
+	/* for each active social site, add it as a list item */
+	if ( ! empty( $active_sites ) ) {
+
+		echo "<ul class='social-media-icons'>";
+
+		foreach ( $active_sites as $active_site ) {
+
+			/* setup the class */
+			$class = 'fa fa-' . $active_site;
+
+			if ( $active_site == 'Email' ) {
+				?>
+				<li>
+					<a class="email" target="_blank" href="mailto:<?php echo antispambot( is_email( get_theme_mod( $active_site ) ) ); ?>">
+						Email
+					</a>
+				</li>
+			<?php } else { ?>
+				<li>
+					<a class="<?php echo $active_site; ?>" target="_blank" href="<?php echo esc_url( get_theme_mod( $active_site) ); ?>">
+						<?php echo $active_site;?>
+					</a>
+				</li>
+				<?php
+			}
+		}
+		echo "</ul>";
+	}
+}
+
 // Custom comments
 function pinzolo_comment($comment, $args, $depth) {
 
@@ -459,34 +516,57 @@ function pinzolo_comment($comment, $args, $depth) {
 //Note the lack of a trailing </li>. WordPress will add it itself once it's done listing any children and whatnot.
 
 
-
-///////////////////////////////////////////////////////
+/**
+* Plugin Name: PBD AJAX Load Posts
+* Plugin URI: http://www.problogdesign.com/
+* Description: Load the next page of posts with AJAX.
+* Version: 0.1
+* Author: Pro Blog Design
+* Author URI: http://www.problogdesign.com/
+*/
 
 /**
- * Custom comment display
- */
-function pinzolo_comment($comment, $args, $depth) {
-    $GLOBALS['comment'] = $comment;
-    // Comment display HTML
-    // ...
-}
-
-/**
- * Initialize AJAX load posts functionality
- */
+* Initialization. Add our script if needed on this page.
+*/
 function pinzolo_pbd_alp_init() {
-    global $wp_query;
+	global $wp_query;
 
-    if (get_option('ajax') == "_loadmore" && !is_singular()) {
-        // Enqueue necessary scripts and localize data for AJAX loading
-        // ...
-    }
+	if( get_option('ajax') == "_loadmore" ) {
+
+		// Add code to index pages.
+		if( !is_singular() ) {
+			// Queue JS and CSS
+			wp_enqueue_script(
+				'pbd-alp-load-posts',
+				get_template_directory_uri('template_url') . '/js/load-posts.js',
+				array('jquery'),
+				'1.0',
+				true
+			);
+
+			// What page are we on? And what is the pages limit?
+			$max = $wp_query->max_num_pages;
+			$paged = ( get_query_var('paged') > 1 ) ? get_query_var('paged') : 1;
+
+			// Add some parameters for the JS.
+			wp_localize_script(
+				'pbd-alp-load-posts',
+				'pbd_alp',
+				array(
+					'startPage' => $paged,
+					'maxPages' => $max,
+					'nextLink' => next_posts($max, false)
+				)
+			);
+		}
+	}
+	if( get_option('ajax') == "_pagination" ) {
+
+	}
 }
 add_action('template_redirect', 'pinzolo_pbd_alp_init');
 
-/**
- * Register custom block patterns
- */
+add_action( 'init', 'pinzolo_patterns' );
 function pinzolo_patterns() {
 	/* Register Pattern */
 	register_block_pattern(
@@ -512,3 +592,5 @@ function pinzolo_patterns() {
 	        )
 	    );
 	}
+
+

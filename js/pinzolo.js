@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-					
+								
 	
 	jQuery('<span class="sf-sub-indicator"></span>').appendTo('.menu-item-has-children > a');
 	
@@ -27,36 +27,22 @@ jQuery(document).ready(function($) {
 
 	jQuery(".toggalnav").click(function(){
         jQuery("body").toggleClass("show_menu");
-  });
+    });
 
-    // Initialize TinyNav for responsive menu
-    $('#menuUl').tinyNav();
+	if(jQuery(window).width() < 600){
 
-    // Add 'js' class to HTML element
-    $('html').addClass('js');
+		jQuery('.sf-sub-indicator').hide();
+		jQuery('<span class="sf-sub-indicator_mobile"></span>').insertAfter("nav li.menu-item-has-children > a");
+	    jQuery(".sf-sub-indicator_mobile").click(function(e){
+	        e.preventDefault();
+	        jQuery(this).parents('.menu-item-has-children').find('.sub-menu').toggleClass("open");
+	        jQuery(this).toggleClass("btn-open");
+	    });
+	}else{
 
 		//jQuery('nav ul').superfish(); 
 
-    // Toggle menu on mobile
-    $('.toggalnav').click(function() {
-        $('body').toggleClass('show_menu');
-    });
+	}
+    
 
-    // Mobile-specific menu interactions
-    if ($(window).width() < 600) {
-        $('.sf-sub-indicator').hide();
-        $('nav li.menu-item-has-children > a').after('<span class="sf-sub-indicator_mobile"></span>');
-        
-        $('.sf-sub-indicator_mobile').click(function(e) {
-            e.preventDefault();
-            $(this)
-                .parents('.menu-item-has-children')
-                .find('.sub-menu')
-                .toggleClass('open');
-            $(this).toggleClass('btn-open');
-        });
-    } else {
-        // Initialize Superfish menu for desktop
-        $('nav ul').superfish();
-    }
 });
