@@ -53,36 +53,32 @@
 			
 		</div>		
 		
-		<div class="center navigation-pagination">	
-		<?php
-			$pagination_option = get_theme_mod('pagination_option', 'load_more');
-			$ajax_option = get_option('ajax');
+		<div class="center navigation-pagination">
+		    <?php
+		        $pagination_option = get_theme_mod('pagination_option', 'load_more');
+		        $ajax_option = get_option('ajax');
 
-			if ($pagination_option === 'load_more') :
-			    // Load More button and logic
-			    ?>
-			    <div class="load-more">Load More Content</div>
-			<?php else :
-				if($ajax_option == "_pagination")
-				{
-			    // Pagination and logic
-			    global $wp_query;
+		        global $wp_query;
+		        $total_posts = $wp_query->found_posts;
 
-			    $big = 999999999; // need an unlikely integer
+		        if ($pagination_option === 'load_more' && $total_posts > 10) :
+		            // Load More button and logic
+		            ?>
+		            <div class="load-more">Load More Content</div>
+		        <?php else :
+		            if ($ajax_option == "_pagination") {
+		                // Pagination and logic
+		                $big = 999999999; // need an unlikely integer
 
-			    echo paginate_links(array(
-			        'base'    => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
-			        'format'  => '?paged=%#%',
-			        'current' => max(1, get_query_var('paged')),
-			        'total'   => $wp_query->max_num_pages,
-			    ));
-			}
-			endif;
-		?>
-
-
-
-
+		                echo paginate_links(array(
+		                    'base'    => str_replace($big, '%#%', esc_url(get_pagenum_link($big))),
+		                    'format'  => '?paged=%#%',
+		                    'current' => max(1, get_query_var('paged')),
+		                    'total'   => $wp_query->max_num_pages,
+		                ));
+		            }
+		        endif;
+		    ?>
 		</div>
 		
 		<div class="clear"></div>
