@@ -537,6 +537,20 @@ figure.wp-block-image img {
     pointer-events: all;
 }
 
+#menuUl.menu ul {
+    display: flex;
+    justify-content: center;
+}
+
+#menuUl.menu ul.sub-menu {
+    flex-direction: column;
+}
+
+
+.customize-partial-edit-shortcut .customize-partial-edit-shortcut-button {
+    padding: 0px !important;
+}
+
 
 
 @media screen and (max-width: 780px) {

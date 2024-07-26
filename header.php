@@ -39,14 +39,15 @@
 				$footer_logo = get_option('logo');
 				$custom_logo_id = get_theme_mod( 'custom_logo' );
 				$darklogo = get_option( 'darklogo' );
-
+				$theme_color = get_theme_mod('theme_color_scheme');
 				if (!$custom_logo_id && !$darklogo) : ?>
 
 					<h1><a href="<?php echo esc_url(home_url('/')); ?>"> <?php echo get_option('header_text', 'Pinzolo'); ?></a></h1>
 					<p><?php echo get_option('sub_header_text', 'Edit me in the Theme Customizer'); ?></p>
 
 				<?php else : 
-					if (get_theme_mod('theme_color_scheme') == 'light') {
+					
+					if ( ($theme_color == 'light' || empty($theme_color)) && !empty($custom_logo_id)) {
 						the_custom_logo(); 
 					} else {
 					    echo '<a href="'.esc_url(home_url('/')).'" class="dark-logo-link" rel="home"><img src="'.$darklogo.'" class="dark-logo" alt="'.sanitize_text_field(get_bloginfo('name')).'" ></a>';
@@ -57,7 +58,7 @@
 							<img src="<?php echo esc_url($footer_logo) ?>" alt="<?php bloginfo('name'); ?> " class="mobilecustom-logo"/>
 						</a>
 					<?php }
-				endif ?>
+				endif; ?>
 
 			</div>
 		</div>
