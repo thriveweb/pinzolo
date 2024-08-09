@@ -17,10 +17,7 @@
 								<p> Made on the Gold Coast by <a href='https://thriveweb.com.au/' target='_blank'>THRIVE</a></p>
 								<p class="powered_by"> Powered by <a href="http://wordpress.org/" title="WordPress">WordPress</a></p>
 							</div>
-							<div class="footer_col">
-								<p>SOCIAL</p>
 								<?php my_social_media_icons(); ?>
-							</div>
 						</div>
 					</div>
 				</div>

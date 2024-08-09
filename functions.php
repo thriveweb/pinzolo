@@ -459,7 +459,9 @@ function my_social_media_icons() {
 	/* for each active social site, add it as a list item */
 	if ( ! empty( $active_sites ) ) {
 
-		echo "<ul class='social-media-icons'>";
+		echo "<div class='footer_col'>
+			<p>SOCIAL</p>
+			<ul class='social-media-icons'>";
 
 		foreach ( $active_sites as $active_site ) {
 
@@ -482,7 +484,7 @@ function my_social_media_icons() {
 				<?php
 			}
 		}
-		echo "</ul>";
+		echo "</ul></div>";
 	}
 }
 
@@ -595,3 +597,10 @@ function pinzolo_patterns() {
 
 //for support theme image
 the_post_thumbnail();
+
+
+function cc_mime_types($mimes) {
+  $mimes['svg'] = 'image/svg+xml';
+  return $mimes;
+}
+add_filter('upload_mimes', 'cc_mime_types');
