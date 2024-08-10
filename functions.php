@@ -23,50 +23,49 @@ add_action( 'wp_enqueue_scripts', 'pinzolo_scripts' );
  */
 add_action('wp_head', 'pinzolo_custom_options');
 function pinzolo_custom_options() {
-$theme_color_scheme = get_theme_mod('theme_color_scheme');
-if( empty($theme_color_scheme) || $theme_color_scheme == "light" ) {
-    $link_color = get_option('link_color', '#000');
-    $link_hover_color = get_option('link_hover_color', '#000');
-    $body_color = get_option('all_text_color', '#000');
-    $header_color = get_option('head_color', '#000');
-} else {
-    $link_color = get_option('dark_link_color', '#fff');
-    $link_hover_color = get_option('dark_link_hover_color', '#fff');
-    $body_color = get_option('dark_header_text_color', '#fff');
-    $header_color = get_option('dark_head_color', '#fff');
+    $theme_color_scheme = get_theme_mod('theme_color_scheme');
+    if( empty($theme_color_scheme) || $theme_color_scheme == "light" ) {
+        $link_color = get_option('link_color', '#000');
+        $link_hover_color = get_option('link_hover_color', '#000');
+        $body_color = get_option('all_text_color', '#000');
+        $header_color = get_option('head_color', '#000');
+    } else {
+        $link_color = get_option('dark_link_color', '#fff');
+        $link_hover_color = get_option('dark_link_hover_color', '#fff');
+        $body_color = get_option('dark_header_text_color', '#fff');
+        $header_color = get_option('dark_head_color', '#fff');
+    }
+    $border = get_option('border');
+
+    echo '
+    <style type="text/css">
+        .dets ul a, .dets p a, .content a, a { color: '. $link_color .'; }
+
+        #logoContainer h1, #logoContainer h1 a, #logoContainer h1 a:hover, #logoContainer p, p, .dets li, .footer_left p, .footer_left a,
+        ul li, ol li, dl dt, dl dd, p a, .wp-block-latest-comments, .wp-block-pullquote p, .wp-block-code, pre, body.dark table td, 
+        .wp-block-image figcaption{ color: '. $body_color .'; }
+
+        p a:hover, a:hover, .dets ul a:hover, article .dets h2 a:hover, .page-numbers:hover, .dets ul a:hover, .dets p a:hover, .content a:hover{
+            color: '. $link_hover_color .';
+            text-decoration: underline;
+        }
+        
+        article .dets h2 a, h1, h2, h3, h4, h5, h6{ color: '. $header_color .'; }
+        body.dark { background: #000 !important; }
+    </style>';
+
+    if (!$border) {
+        echo '
+        <style type="text/css">
+            #wrapper_bg {
+                -webkit-box-shadow: 0px 0px 0px black !important;
+                -moz-box-shadow: 0px 0px 0px black !important;
+                box-shadow: 0px 0px 0px black !important;
+            }
+        </style>';
+    }
 }
-	$border = get_option('border');
 
-	echo'
-	<style type="text/css" id="custom-colour-css">
-		.dets ul a, .dets p a, .content a, a { color:  '. $link_color .'; }
-
-		#logoContainer h1, #logoContainer h1 a, #logoContainer h1 a:hover,#logoContainer p, p, .dets li, .footer_left p, .footer_left a,
-		ul li, ol li, dl dt, dl dd, p a, .wp-block-latest-comments, .wp-block-pullquote p, .wp-block-code, pre, body.dark table td, 
-		.wp-block-image figcaption{ color:'. $body_color .';  }
-
-		p a:hover, a:hover, .dets ul a:hover, article .dets h2 a:hover,.page-numbers:hover, .dets ul a:hover, .dets p a:hover, .content a:hover{
-			color:'. $link_hover_color .';
-			text-decoration:underline;
-		}
-		
-		article .dets h2 a, h1, h2, h3, h4, h5, h6{ color:  '. $header_color .' ;  }
-		body.dark {
-		    background: #000 !important;
-		}
-	</style>';
-
-	if( !$border ) :
-		echo'
-		<style type="text/css" id="custom-colour-css">
-		#wrapper_bg{
-			-webkit-box-shadow: 0px 0px 0px black;
-			-moz-box-shadow: 0px 0px 0px black;
-			box-shadow: 0px 0px 0px black;
-		}
-	</style>';
-endif;
-}
 
 
 
@@ -115,8 +114,7 @@ function pinzolo_customize_register($wp_customize){
 	$colors[] = array( 'slug'=>'head_color', 'default' => '#000000', 'label' => 'H1, H2, H3 Color' );
 	$colors[] = array( 'slug'=>'all_text_color', 'default' => '#000000', 'label' => 'Text Color' );
 
-	foreach($colors as $color)
-	{
+	foreach($colors as $color) {
     	// SETTINGS
 		$wp_customize->add_setting( $color['slug'], array( 'default' => $color['default'], 'type' => 'option', 'capability' => 'edit_theme_options' , 'sanitize_callback' => 'sanitize_hex_color'));
 
@@ -138,6 +136,7 @@ function pinzolo_customize_register($wp_customize){
         'capability' => 'edit_theme_options',
         'sanitize_callback' => 'sanitize_hex_color'
     ));
+
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'dark_link_color', array(
         'label' => __('Link Color', 'pinzolo'),
         'section' => 'colors',
@@ -154,6 +153,7 @@ function pinzolo_customize_register($wp_customize){
         'capability' => 'edit_theme_options',
         'sanitize_callback' => 'sanitize_hex_color'
     ));
+
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'dark_link_hover_color', array(
         'label' => __('Link Hover Color', 'pinzolo'),
         'section' => 'colors',
@@ -170,6 +170,7 @@ function pinzolo_customize_register($wp_customize){
         'capability' => 'edit_theme_options',
         'sanitize_callback' => 'sanitize_hex_color'
     ));
+
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'dark_head_color', array(
         'label' => __('H1, H2, H3, H4 Color', 'pinzolo'),
         'section' => 'colors',
@@ -186,6 +187,7 @@ function pinzolo_customize_register($wp_customize){
         'capability' => 'edit_theme_options',
         'sanitize_callback' => 'sanitize_hex_color'
     ));
+
     $wp_customize->add_control(new WP_Customize_Color_Control($wp_customize, 'dark_header_text_color', array(
         'label' => __('Paragraph Color', 'pinzolo'),
         'section' => 'colors',
@@ -202,11 +204,11 @@ function pinzolo_customize_register($wp_customize){
 		'capability' => 'edit_theme_options',
 		'sanitize_callback' => 'sanitize_text_field'
 	) );
+
 	$wp_customize->add_control( 'header_text', array(
 		'label'      => 'Header Text',
 		'section'    => 'title_tagline',
 	) );
-
 
 	// Add Sub Header Text
 	$wp_customize->add_setting( 'sub_header_text', array(
@@ -215,11 +217,11 @@ function pinzolo_customize_register($wp_customize){
 		'capability' => 'edit_theme_options',
 		'sanitize_callback' => 'sanitize_text_field'
 	) );
+
 	$wp_customize->add_control( 'sub_header_text', array(
 		'label'      => 'Sub Header Text',
 		'section'    => 'title_tagline',
 	) );
-
 
 	// Add logo option
 	$wp_customize->add_setting( "logo", array(
@@ -227,6 +229,7 @@ function pinzolo_customize_register($wp_customize){
 		'capability' => 'edit_theme_options',
 		'sanitize_callback' => 'esc_url'
 	) );
+
 	$wp_customize->add_control(  new WP_Customize_Image_Control($wp_customize, 'logo', array(
 		'label'    =>  'Upload a footer logo',
 		'section'  => 'title_tagline',
@@ -244,7 +247,6 @@ function pinzolo_customize_register($wp_customize){
 		'section'  => 'title_tagline',
 	) ) );
 
-
 	// Add border option
 	$wp_customize->add_setting( "border", array(
 		'default'    => true,
@@ -252,6 +254,7 @@ function pinzolo_customize_register($wp_customize){
 		'type'       => 'option',
 		'sanitize_callback' => 'sanitize_text_field'
 	) );
+
 	$wp_customize->add_control( 'border', array(
 		'label'    =>  'Show border / shadow?',
 		'section'  => 'colors',
@@ -288,6 +291,7 @@ function pinzolo_customize_register($wp_customize){
         'default'           => 'light',
         'sanitize_callback' => 'sanitize_text_field',
     ));
+
     $wp_customize->add_control('theme_color_scheme', array(
         'type'    => 'radio',
         'section' => 'colors',
@@ -363,7 +367,6 @@ function pinzolo_register_sidebars(){
 		'before_title' => '<h3>',
 		'after_title' => '</h3>'
 	));
-
 }
 
 /**
@@ -381,11 +384,11 @@ function register_custom_menu() {
  * to show a home link
  * 
  */
+add_filter( 'wp_page_menu_args', 'pinzolo_page_menu_args' );
 function pinzolo_page_menu_args( $args ) {
 	$args['show_home'] = true;
 	return $args;
 }
-add_filter( 'wp_page_menu_args', 'pinzolo_page_menu_args' );
 
 // Search only posts
 function pinzolo_SearchFilter($query) {
@@ -514,18 +517,8 @@ function pinzolo_comment($comment, $args, $depth) {
 
 		</div>
 	</li>
-	<?php } 
-//Note the lack of a trailing </li>. WordPress will add it itself once it's done listing any children and whatnot.
+<?php } 
 
-
-/**
-* Plugin Name: PBD AJAX Load Posts
-* Plugin URI: http://www.problogdesign.com/
-* Description: Load the next page of posts with AJAX.
-* Version: 0.1
-* Author: Pro Blog Design
-* Author URI: http://www.problogdesign.com/
-*/
 
 /**
 * Initialization. Add our script if needed on this page.
@@ -599,8 +592,8 @@ function pinzolo_patterns() {
 the_post_thumbnail();
 
 
+add_filter('upload_mimes', 'cc_mime_types');
 function cc_mime_types($mimes) {
   $mimes['svg'] = 'image/svg+xml';
   return $mimes;
 }
-add_filter('upload_mimes', 'cc_mime_types');
