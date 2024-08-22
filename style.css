@@ -553,6 +553,22 @@ nav ul {
     padding: 0px !important;
 }
 
+header.resize_banner {
+    position: relative;
+    display: flex;
+/*    height: auto !important;*/
+}
+
+header.resize_banner img {
+    height: auto;
+}
+
+header img.size-full {
+    height: auto;
+    width: auto;
+    max-width: 100%;
+}
+
 
 
 @media screen and (max-width: 780px) {
@@ -667,20 +683,21 @@ single-gallery {
 /*** dropit ***/
 nav ul li ul {
     position: absolute;
-    top: 37px;
+    top: 53px;
     margin: 0;
     padding: 0;
     float: left;
     width: 170px;
     z-index: 100;
     height: auto;
-    left: -15px;
+    left: -44px;
     background-color: #fff;
     border: 1px solid;
     border-color: black;
     border-radius: 12px;
     opacity: 0;
     pointer-events: none;
+    padding: 0 32px;
 }
 body.dark nav ul li ul{
 	border-color: #fff;
@@ -712,15 +729,15 @@ nav ul li ul li span{
 	display:none;
 }
 
-nav ul li ul li a,
-nav ul li.current_page_item ul li a{
-	color: black;
-	display:inline-block;
-	line-height:25px;
-	height: auto;
-	padding-left: 23px;
-	width:120px;
-	text-align:left;
+nav ul li ul li a, nav ul li.current_page_item ul li a {
+    color: black;
+    display: inline-block;
+    line-height: 25px;
+    height: auto;
+    padding-left: 0;
+    width: 120px;
+    text-align: left;
+    text-transform: capitalize;
 }
 body.dark nav ul li ul li a, body.dark nav ul li.current_page_item ul li a{
 	color: #fff;
@@ -749,13 +766,15 @@ nav ul li ul li.current_page_item a:hover{
 
 .sf-sub-indicator{
 	width: 17px;
-	height: 13px;
-	background-image: url(images/drop.svg);
+    height: 13px;
+    /* background-image: url(images/drop.svg); */
+    background-image: url(images/plus-black.png);
     background-repeat: no-repeat;
     position: relative;
-    right: -2px;
-    top: 2px;
+    right: -4px;
+    top: 4px;
     display: inline-block;
+    background-size: 8px;
 }
 
 nav ul ul .sf-sub-indicator{
@@ -1925,7 +1944,8 @@ body.dark table td{
 header img.size-full {
     width: 100%;
     height: 336px;
-    object-fit: cover;
+/*    object-fit: cover;*/
+    object-fit: contain;
     margin-top: 25px;
     position: absolute;
     border-top: 1px solid;
@@ -2241,14 +2261,12 @@ body.dark .sidebar_widget .wp-block-search__input{
 	}
 
 	.show_menu img.menuclose {
-	    display: block;
-	    position: absolute;
-	    z-index: 99;
-	    right: 9px;
-	    top: 15px;
-	   /* -webkit-filter: invert(100%);
-    	filter: invert(100%);*/
-	}
+        display: block;
+        position: absolute;
+        z-index: 99;
+        right: 0;
+        top: -4px;
+    }
 	img.menuopen {
 	    -webkit-filter: invert(100%);
 	    filter: invert(100%);

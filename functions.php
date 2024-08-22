@@ -597,3 +597,52 @@ function cc_mime_types($mimes) {
   $mimes['svg'] = 'image/svg+xml';
   return $mimes;
 }
+
+
+// Add theme customization options
+function my_custom_banner_option($wp_customize) {
+    // Add a new section for the banner options
+    $wp_customize->add_section('banner_options', array(
+        'title'    => __('Banner Options', 'pinzolo'),
+        'priority' => 30,
+    ));
+
+    // Add setting for banner size option
+    $wp_customize->add_setting('banner_size_option', array(
+        'default'   => 'original',
+        'transport' => 'refresh',
+    ));
+
+    // Add control for the banner size option
+    $wp_customize->add_control('banner_size_option_control', array(
+        'label'    => __('Banner Size Option', 'pinzolo'),
+        'section'  => 'banner_options',
+        'settings' => 'banner_size_option',
+        'type'     => 'radio',
+        'choices'  => array(
+            'resize'   => __('Resize to Screen Width', 'pinzolo'),
+            'original' => __('Keep Original Size', 'pinzolo'),
+        ),
+    ));
+}
+add_action('customize_register', 'my_custom_banner_option');
+
+// Get the banner class based on the setting
+function get_banner_class() {
+    $banner_size = get_theme_mod('banner_size_option', 'original');
+
+    if ($banner_size === 'resize') {
+        return 'resize_banner';
+    } else {
+        return 'original_banner';
+    }
+}
+
+// Set default values when the theme is activated
+function set_default_banner_size_option() {
+    $default = 'original';
+    if (get_theme_mod('banner_size_option') === false) {
+        set_theme_mod('banner_size_option', $default);
+    }
+}
+add_action('after_switch_theme', 'set_default_banner_size_option');
