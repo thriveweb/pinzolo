@@ -138,7 +138,7 @@
 			?>
 
 			<?php if ($image && !is_page_template('page-gallery.php')) : ?>
-				<header>
+				<header class="<?php echo esc_attr(get_banner_class()); ?>">
 					<img class="size-full" src="<?php echo $image; ?>" alt="" />
 				</header>
 			<?php endif; ?>
