@@ -12,15 +12,27 @@ Dates in (Day/Month/Year)
 
 ----
 
-(26/06/2024) -  Improvements - Version 1.2.11
-[*] Design change
+(24/08/2024) -  Improvements - Version 2.0.1
+[*] Enhancement - Dark Mode & White Mode
+[+] Some UI Updates
+
+----
+
+(5/07/2024) -  Improvements - Version 2.0.0
+[*] Enhancement - Design change
 [!] General updates
 
 ----
 
-(07/06/2023) -  Improvements - Version 1.2.11
-[!] General updates 
+(26/06/2024) -  Improvements - Version 1.2.11
+[*] Design change
 [*] Fixed internationalisation issue
+[!] General updates
+
+----
+
+(07/06/2023) -  Improvements - Version 1.2.10
+[!] General updates
 [*] Debugged for the deregistering of the deprecated hooks and action
 [*] Updated the blog head template
 [*] Updated the Superfish JS plugin to fix the jQuery.browser deprecation
@@ -49,6 +61,7 @@ Dates in (Day/Month/Year)
 ----
 
 (30/12/2013) -  Improvements - Version 1.2.5
+[+] Enhancement - Version 1.2.5
 [+] Made Retina-Ready
 [*] CSS updates - Font style improvements
 [+] Option to disable AJAX load
