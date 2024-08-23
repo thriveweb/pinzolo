@@ -1,5 +1,14 @@
 <?php
 
+// Add theme version to the head section
+function add_theme_version_meta() {
+    $theme = wp_get_theme();
+    $version = $theme->get('Version');
+    echo '<meta name="theme-version" content="' . esc_attr($version) . '">' . "\n";
+}
+add_action('wp_head', 'add_theme_version_meta');
+
+
 /**
  * Header stuffs
  * 
