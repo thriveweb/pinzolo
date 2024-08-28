@@ -150,6 +150,12 @@ body{
 .mobile_cont_menu_header{
 	display: none;
 }
+
+.mobile_logo_left{
+	display: none;
+}
+
+
 body {
 
 	font-size: 16px;
@@ -300,36 +306,56 @@ header p.tagline{
 	font-size: 12px;
 }
 
-#logoContainer{
-	width: 100%;
-	height: 100%;
-	text-align: center;
-	margin-top: 75px;
+.text_logo{
+	padding: 19px 0 12px;
+}
+
+#logoContainer {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+#logoContainer img{
+	width: 200px;
+    object-fit: contain;
+    height: 64px;
 }
 
 #logoContainer h1{
 	color: white;
-
 	line-height: 0.8em;
-
 	margin-bottom: 0;
-
 	-webkit-transition: none;
 	-moz-transition: none;
 	-o-transition: none;
 	transition: none;
-
 	display: block;
 	font-weight: 900;
+	font-size: 22px;
 }
 
 #logoContainer p{
 	color: white;
-	font-size: 12px;
-	padding: 5px;
-	display: inline-block;
-	margin-top: 0;
+    font-size: 12px;
+    padding: 10px 0 0 0;
+    display: inline-block;
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 12px;
 }
+
+.current-menu-item .sf-sub-indicator{
+		opacity: 0.5;
+	}
+
+.current-menu-item .sf-sub-indicator_mobile{
+		opacity: 0.5;
+	}
 
 #main {
     margin-bottom: 40px;
@@ -510,7 +536,7 @@ img.size-full{
 /*---------------------------- main menu ----------------------------*/
 
 #navwrap{
-	position: fixed;
+	position: sticky;
 	left: 0;
 	top: 0;
 	width: 100%;
@@ -553,37 +579,34 @@ nav ul {
     padding: 0px !important;
 }
 
-header.original_banner{
-	overflow: hidden;
+.desktop_cont_menu_header{
+	padding: 10px 0;
+	max-width: 100%;
 }
 
-header.resize_banner {
+div.resize_banner {
+	justify-content: center;
     position: relative;
     display: flex;
-    height: auto !important;
     align-items: center;
-    height: 100% !important;
-    max-height: 337px;
-    overflow: hidden;
 }
 
-header.resize_banner img {
+div.resize_banner img {
     height: auto;
 }
 
-header img.size-full {
-    height: auto;
-    width: auto;
-    max-width: 100%;
+div.original_banner img.size-full {
+	object-fit: cover;
+    height: 337px;
 }
-
-
 
 @media screen and (max-width: 780px) {
 
 	.admin-bar #navwrap{
 		top: 46px;
 	}
+
+
 
 }
 
@@ -607,11 +630,6 @@ nav{
 	z-index:600;
 }
 
-/*nav .filler{
-	width: 100%;
-	display: inline-block;
-    height:0px;
-}*/
 
 
 ul#menuUl {
@@ -619,6 +637,12 @@ ul#menuUl {
     align-items: center;
     justify-content: space-between;
     padding: 0 40px;
+}
+
+#navwrap2 nav .menu{
+	max-width: 1310px;
+	margin: 0 auto;
+/*	padding: 0 80px;*/
 }
 
 nav ul{
@@ -646,6 +670,10 @@ nav ul li{
 .menu ul li{
 	padding-left: 1%;
 	padding-right: 1%;
+}
+
+.current-page-ancestor a{
+	color: #000 !important;
 }
 
 nav ul li a{
@@ -690,6 +718,7 @@ single-gallery {
 
 /*** dropit ***/
 nav ul li ul {
+	transition: all 0.5s ease-in-out;
     position: absolute;
     top: 53px;
     margin: 0;
@@ -748,7 +777,7 @@ nav ul li ul li a, nav ul li.current_page_item ul li a {
     text-transform: capitalize;
 }
 body.dark nav ul li ul li a, body.dark nav ul li.current_page_item ul li a{
-	color: #fff;
+	color: #fff !important;
 }
 
 nav ul li ul li a{
@@ -767,6 +796,14 @@ nav ul li ul li.current_page_item a{
 	color: #b5b5b5 !important;
 }
 
+nav ul li ul.sub-menu li.current_page_item a{
+	color: #b5b5b5 !important;
+}
+
+nav ul li ul.sub-menu li a{
+	color: #000 !important;
+}
+
 nav ul li ul li a:hover,
 nav ul li ul li.current_page_item a:hover{
 	color: #b5b5b5 !important;
@@ -775,7 +812,6 @@ nav ul li ul li.current_page_item a:hover{
 .sf-sub-indicator{
 	width: 17px;
     height: 13px;
-    /* background-image: url(images/drop.svg); */
     background-image: url(images/plus-black.png);
     background-repeat: no-repeat;
     position: relative;
@@ -1024,7 +1060,7 @@ nav ul ul .sf-sub-indicator{
 }
 
 #searchbox form{
-	width:103%;
+	width:100%;
 }
 
 #Searchform{
@@ -1950,22 +1986,24 @@ body.dark table td{
 	border-color: #fff;
 }
 
-header img.size-full {
-    width: 100%;
+header {
+    position: sticky;
+    z-index: 999;
+    top: 0;
+}
+div img.size-full{
+	width: 100%;
     height: 100%;
-    object-fit: cover;
-/*    object-fit: contain; */
-    margin-top: 25px;
     position: relative;
     border-top: 1px solid;
     border-color: black;
-    max-height: 337px;
     z-index: -1;
 }
-header {
-    height: 337px;
-    position: relative;
+
+.dark div img.size-full{
+	border-color: #fff;
 }
+
 body.dark header img.size-full{
 	border-color: #fff;
 }
@@ -2099,20 +2137,64 @@ body.dark .sidebar_widget .wp-block-search__input{
     h3{ font-size: 15px; line-height: 18px }
 }
 @media screen and (max-width: 600px) {
+	.scol {
+	    margin-top: 60px;
+	}
+	.mobile_text_logo{
+		padding-top: 5px;
+	}
+	#logoContainer img {
+	    object-fit: contain;
+	    height: 45px;
+	}
+	.show_menu .mobile_logo_left {
+	    display: block;
+	    position: fixed;
+	    top: 15px;
+	    z-index: 999;
+	    left: 20px;
+	}
+	#navwrap{
+		height: 70px;
+	}
+
+
+	div.resize_banner img {
+	    object-fit: contain;
+	}
+
+	#menuUl.menu ul.sub-menu li {
+        padding-left: 0;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+	 nav ul li ul {
+	    position: relative;
+	    height: 0;
+	    opacity: 0;
+	    top: inherit;
+	    left: inherit;
+	    padding: 0px;
+	    width: 100%;
+	    float: none;
+	    pointer-events: auto;
+	}
+	ul.sub-menu li a {
+        font-size: 34px;
+        line-height: 35px !important;
+        height: auto !important;
+        display: block !important;
+    }
 	.desktop_cont_menu_header{
 		display: none;
 	}
-	.menu .sf-sub-indicator {
- 		display: none;
-	}
-
-
 	.mobile_cont_menu_header{
 		display: block;
 	}
 	body.show_menu {
 	    overflow: hidden;
 	    height: 100vh;
+
 	}
 	
 	nav ul {    
@@ -2140,8 +2222,8 @@ body.dark .sidebar_widget .wp-block-search__input{
 	#navwrap2{
 		padding-left: 5px;
 		padding-right: 5px;
-		padding-bottom: 10px;
-
+		padding-bottom: 0;
+		height: 100%;
 	}
 
 	.js .tinynav {
@@ -2154,8 +2236,17 @@ body.dark .sidebar_widget .wp-block-search__input{
 		display: none;
 
 	}
-	.js #menuUl { display: block; padding: 0 16px 393px 16px;}
+	.js #menuUl {
+		display: block;
+	  	padding: 0 16px 393px 16px;
+	}
 
+    #navwrap2 nav .menu {
+        padding: 0 16px;
+        overflow-y: auto;
+        overflow-x: hidden;
+        height: calc(100vh - 37vh);
+    }
 	.show_menu #navwrap2::before{
 		content: "";
 		width: 100%;
@@ -2175,6 +2266,7 @@ body.dark .sidebar_widget .wp-block-search__input{
 	}
 	nav ul li {
 	    display: block !important;
+	    margin-bottom: 30px;
 	}
 
 	nav .footer_col{
@@ -2191,9 +2283,38 @@ body.dark .sidebar_widget .wp-block-search__input{
 		font-size: 42px;
 	    font-weight: 400;
 	    text-transform: capitalize;
-	    height: 75px !important;
+	    height: auto !important;
 	    width: auto !important;
-	    line-height: 50px !important;
+/*	    color: #b5b5b5;*/
+	    line-height: 28px !important;
+	}
+
+	ul li.current_page_item a{
+		color: #000 !important;
+	}
+
+	.dark header ul li.current_page_item a, nav ul li ul.sub-menu li.current_page_item a{
+		color: #b5b5b5 !important;
+	}
+
+	.dark header ul li a, nav ul li ul.sub-menu li a{
+		color: #fff;
+	}
+
+		.dark header ul li a{
+		color: #fff !important;
+	}
+
+	.dark .sf-sub-indicator {
+        filter: invert(1);
+    }
+
+	.dark .current-menu-item .sf-sub-indicator {
+        filter: invert(0.7);
+    }
+
+	.current-menu-item .sf-sub-indicator{
+		opacity: 1;
 	}
 
     .show_menu img.mobilecustom-logo {
@@ -2221,27 +2342,57 @@ body.dark .sidebar_widget .wp-block-search__input{
 		font-size: 14px;
 		padding-top: 24px;
 	}
-	nav ul li ul.open {
-	    position: relative;
-	    opacity: 1;
-	    float: unset;
-	    box-shadow: none;
+    nav ul li ul.open {
+        width: 100%;
+        position: relative;
+        opacity: 1 !important;
+        float: unset;
+        box-shadow: none;
+        top: 0;
+        left: 0;
+        visibility: visible;
+        display: block;
+        height: 100%;
+    }
+    .sf-sub-indicator {
+	    width: 20px;
+	    height: 20px;
+	    background-position: center;
+	    right: -5px;
+	    transition: all 0.3s ease-in-out;
+	    background-size: 12px;
 	    top: 0;
-	    left: 0;
-	    visibility: visible;
-	    margin-bottom: 21px;
-	    display: block;
 	}
+
+	.sf-sub-indicator.btn-open{
+		transform: rotate(134deg);
+		top: 0;
+        right: -5px;
+	}
+
 	body.dark nav ul li ul.open{
     	background-color: #000;
 	}
-	nav ul.sub-menu{
-		display: none;
-		float: none;
-		border: none;
-	}
+	nav ul.sub-menu {
+        margin-left: 40px;
+        transition: none;
+        padding-right: 40px;
+        float: none;
+        margin-top: 40px;
+        margin-bottom: 80px;
+        border: none;
+        visibility: hidden;
+        opacity: 0 !important;
+        position: absolute;
+    }
 	nav ul li ul li{
 		border: none;
+	}
+
+	.show_menu .toggalnav .menuclose{
+		top: -9px;
+		right: -6px;
+		position: relative;
 	}
 
     .toggalnav {
@@ -2251,12 +2402,12 @@ body.dark .sidebar_widget .wp-block-search__input{
         padding-top: 0;
         padding-right: 5px;
         position: absolute;
-        top: 15px;
+        top: 23px;
         right: 10px;
     }
     #logoContainer {
         margin-top: 0;
-        padding-top: 15px;
+        padding-top: 10px;
     }
 
 	.menuclose {
@@ -2267,10 +2418,12 @@ body.dark .sidebar_widget .wp-block-search__input{
 		margin-bottom: 0;
 	}
 
-	.show_menu nav {
-	    transform: translateX(0);
-	}
-
+    .show_menu nav {
+        transform: translateX(0);
+        overflow-y: auto;
+        height: 100%;
+        overflow-x: hidden;
+    }
 	.show_menu img.menuclose {
         display: block;
         position: absolute;
@@ -2294,9 +2447,16 @@ body.dark .sidebar_widget .wp-block-search__input{
 	}
 
     #searchbox {
-    	margin-right: 5px !important;
+    	padding: 5px 0 !important;
+        width: 100%;
+        margin: 0;
     }
-
+    #Searchform{
+    	width: 100%;
+    }
+    #cat{
+    	width: 100%;
+    }
     .gcol{
 	    max-width: 100%;
     }
