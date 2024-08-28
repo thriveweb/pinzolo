@@ -58,18 +58,18 @@
 					
 								}
 
-								if( !empty($footer_logo)){ ?>
-									<a href="<?php echo esc_url( home_url( '/' ) ); ?>">
-										<img src="<?php echo esc_url($footer_logo) ?>" alt="<?php bloginfo('name'); ?> " class="mobilecustom-logo"/>
-									</a>
-								<?php }
 							endif; ?>
 
 						</div>
 					</div>
-					<div class="mobile_logo_left">
-						<img src="<?php echo esc_url(get_template_directory_uri() . '/images/mobile_menu_logo.svg'); ?>" alt="<?php bloginfo('name'); ?>" class="mobile_header_logo_ixon"/>
-					</div>
+					<?php 
+					$mlogo = !empty($custom_logo_id) ? wp_get_attachment_image_src( $custom_logo_id, 'full' )[0] : $darklogo;
+						if(!empty($mlogo)){ ?>
+							<div class="mobile_logo_left">
+								<img src="<?php echo $mlogo; ?>" alt="<?php bloginfo('name'); ?>" class="mobile_header_logo_ixon"/>
+							</div>
+						<?php 
+					} ?>
 					<a href="javascript:;" class="toggalnav">
 						<img class="menuopen" src="<?php echo esc_url(get_template_directory_uri() . '/images/menu-icon.svg'); ?>" alt="menu-icon">
 						<img class="menuclose" src="<?php echo esc_url(get_template_directory_uri() . '/images/menu-icon-close.svg'); ?>" alt="menu-icon">
