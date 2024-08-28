@@ -2154,6 +2154,9 @@ body.dark .sidebar_widget .wp-block-search__input{
 	    z-index: 999;
 	    left: 20px;
 	}
+	.show_menu .mobile_logo_left img{
+		width: 50px;
+	}
 	#navwrap{
 		height: 70px;
 	}
