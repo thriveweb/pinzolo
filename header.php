@@ -31,7 +31,58 @@
 	<?php wp_body_open(); ?>
 
 	<div id="wrapper_border" class="site-main">
+		<header>
+			<div id="navwrap">
+				
+				<div id="navwrap2">
+					<div class="center mobile_cont_menu_header">
+						<div id="logoContainer">
+							<?php 
+							$footer_logo = get_option('logo');
+							$custom_logo_id = get_theme_mod( 'custom_logo' );
+							$darklogo = get_option( 'darklogo' );
+							$theme_color = get_theme_mod('theme_color_scheme');
+							if (!$custom_logo_id && !$darklogo) : ?>
+								<div class="mobile_text_logo">
+									<h1><a href="<?php echo esc_url(home_url('/')); ?>"> <?php echo get_option('header_text', 'Pinzolo'); ?></a></h1>
+									<p><?php echo get_option('sub_header_text', 'Edit me in the Theme Customizer'); ?></p>
+								</div>
 
+							<?php else : 
+								
+								if ( ($theme_color == 'light' || empty($theme_color)) && !empty($custom_logo_id)) {
+									the_custom_logo(); 
+								} else {
+									$darklogoimg = empty($darklogo) ? wp_get_attachment_image_src( $custom_logo_id, 'full' )[0] : $darklogo;				
+					   			 	echo '<a href="'.esc_url(home_url('/')).'" class="dark-logo-link" rel="home"><img src="'.$darklogoimg.'" class="dark-logo" alt="'.sanitize_text_field(get_bloginfo('name')).'" ></a>';
+					
+								}
+
+								if( !empty($footer_logo)){ ?>
+									<a href="<?php echo esc_url( home_url( '/' ) ); ?>">
+										<img src="<?php echo esc_url($footer_logo) ?>" alt="<?php bloginfo('name'); ?> " class="mobilecustom-logo"/>
+									</a>
+								<?php }
+							endif; ?>
+
+						</div>
+					</div>
+					<div class="mobile_logo_left">
+						<img src="<?php echo esc_url(get_template_directory_uri() . '/images/mobile_menu_logo.svg'); ?>" alt="<?php bloginfo('name'); ?>" class="mobile_header_logo_ixon"/>
+					</div>
+					<a href="javascript:;" class="toggalnav">
+						<img class="menuopen" src="<?php echo esc_url(get_template_directory_uri() . '/images/menu-icon.svg'); ?>" alt="menu-icon">
+						<img class="menuclose" src="<?php echo esc_url(get_template_directory_uri() . '/images/menu-icon-close.svg'); ?>" alt="menu-icon">
+					</a>
+					<nav>
+						<?php wp_nav_menu(array('theme_location' => 'top', 'container' => 0, 'menu_id' => 'menuUl', 'items_wrap' => '<ul id="%1$s" class="%2$s">%3$s</ul>')); ?>
+
+					</nav>
+
+				</div>
+
+			</div>
+		</header>
 		<!--logo-->
 		<div class="center desktop_cont_menu_header">
 			<div id="logoContainer">
@@ -41,16 +92,20 @@
 				$darklogo = get_option( 'darklogo' );
 				$theme_color = get_theme_mod('theme_color_scheme');
 				if (!$custom_logo_id && !$darklogo) : ?>
-
-					<h1><a href="<?php echo esc_url(home_url('/')); ?>"> <?php echo get_option('header_text', 'Pinzolo'); ?></a></h1>
-					<p><?php echo get_option('sub_header_text', 'Edit me in the Theme Customizer'); ?></p>
+					<div class="text_logo">
+						<h1><a href="<?php echo esc_url(home_url('/')); ?>"> <?php echo get_option('header_text', 'Pinzolo'); ?></a></h1>
+						<p><?php echo get_option('sub_header_text', 'Edit me in the Theme Customizer'); ?></p>
+					</div>
 
 				<?php else : 
 					
 					if ( ($theme_color == 'light' || empty($theme_color)) && !empty($custom_logo_id)) {
 						the_custom_logo(); 
 					} else {
-					    echo '<a href="'.esc_url(home_url('/')).'" class="dark-logo-link" rel="home"><img src="'.$darklogo.'" class="dark-logo" alt="'.sanitize_text_field(get_bloginfo('name')).'" ></a>';
+
+						$darklogoimg = empty($darklogo) ? wp_get_attachment_image_src( $custom_logo_id, 'full' )[0] : $darklogo;
+						
+						echo '<a href="'.esc_url(home_url('/')).'" class="dark-logo-link" rel="home"><img src="'.$darklogoimg.'" class="dark-logo" alt="'.sanitize_text_field(get_bloginfo('name')).'" ></a>';
 					}
 
 					if( !empty($footer_logo)){ ?>
@@ -65,63 +120,6 @@
 
 		<div id="wrapper_bg">
 
-			<div id="navwrap">
-				
-				<div id="navwrap2">
-					<div class="center mobile_cont_menu_header">
-			<div id="logoContainer">
-				<?php 
-				$footer_logo = get_option('logo');
-				$custom_logo_id = get_theme_mod( 'custom_logo' );
-				$darklogo = get_option( 'darklogo' );
-				$theme_color = get_theme_mod('theme_color_scheme');
-				if (!$custom_logo_id && !$darklogo) : ?>
-
-					<h1><a href="<?php echo esc_url(home_url('/')); ?>"> <?php echo get_option('header_text', 'Pinzolo'); ?></a></h1>
-					<p><?php echo get_option('sub_header_text', 'Edit me in the Theme Customizer'); ?></p>
-
-				<?php else : 
-					
-					if ( ($theme_color == 'light' || empty($theme_color)) && !empty($custom_logo_id)) {
-						the_custom_logo(); 
-					} else {
-					    echo '<a href="'.esc_url(home_url('/')).'" class="dark-logo-link" rel="home"><img src="'.$darklogo.'" class="dark-logo" alt="'.sanitize_text_field(get_bloginfo('name')).'" ></a>';
-					}
-
-					if( !empty($footer_logo)){ ?>
-						<a href="<?php echo esc_url( home_url( '/' ) ); ?>">
-							<img src="<?php echo esc_url($footer_logo) ?>" alt="<?php bloginfo('name'); ?> " class="mobilecustom-logo"/>
-						</a>
-					<?php }
-				endif; ?>
-
-			</div>
-		</div>
-					<a href="javascript:;" class="toggalnav">
-						<img class="menuopen" src="<?php echo esc_url(get_template_directory_uri() . '/images/menu-icon.svg'); ?>" alt="menu-icon">
-						<img class="menuclose" src="<?php echo esc_url(get_template_directory_uri() . '/images/menu-icon-close.svg'); ?>" alt="menu-icon">
-					</a>
-					<nav>
-						<?php wp_nav_menu(array('theme_location' => 'top', 'container' => 0, 'menu_id' => 'menuUl', 'items_wrap' => '<ul id="%1$s" class="%2$s"><li class="tnskip" >&nbsp;</li>%3$s<li class="tnskip">&nbsp;</li><li class="tnskip filler"></li></ul>')); ?>
-
-						<!-- <div class="mobile_menu_details">
-							<div class="footer_col">
-								<p class="social_title_header">SOCIAL</p>
-								<?php //my_social_media_icons(); ?>
-							</div>
-
-							<div class="footer_col">
-								<p> &copy; <?php //echo date('Y'); ?> Pinzolo Theme</p>
-								<p> Made on the Gold Coast by <a href='https://thriveweb.com.au/' target='_blank'>THRIVE</a></p>
-								<p class="powered_by"> Powered by <a href="http://wordpress.org/" title="WordPress">WordPress</a></p>
-							</div>
-							
-						</div> -->
-					</nav>
-
-				</div>
-
-			</div>
 
 			<?php
 
@@ -138,7 +136,7 @@
 			?>
 
 			<?php if ($image && !is_page_template('page-gallery.php')) : ?>
-				<header class="<?php echo esc_attr(get_banner_class()); ?>">
+				<div class="<?php echo esc_attr(get_banner_class()); ?>">
 					<img class="size-full" src="<?php echo $image; ?>" alt="" />
-				</header>
+				</div>
 			<?php endif; ?>
