@@ -601,13 +601,6 @@ function pinzolo_patterns() {
 the_post_thumbnail();
 
 
-add_filter('upload_mimes', 'cc_mime_types');
-function cc_mime_types($mimes) {
-  $mimes['svg'] = 'image/svg+xml';
-  return $mimes;
-}
-
-
 // Add theme customization options
 function my_custom_banner_option($wp_customize) {
     // Add a new section for the banner options
@@ -616,10 +609,11 @@ function my_custom_banner_option($wp_customize) {
         'priority' => 30,
     ));
 
-    // Add setting for banner size option
+    // Add setting for banner size option with sanitization callback
     $wp_customize->add_setting('banner_size_option', array(
-        'default'   => 'original',
-        'transport' => 'refresh',
+        'default'           => 'original',
+        'transport'         => 'refresh',
+        'sanitize_callback' => 'sanitize_banner_size_option', // Added sanitization callback
     ));
 
     // Add control for the banner size option
@@ -635,6 +629,17 @@ function my_custom_banner_option($wp_customize) {
     ));
 }
 add_action('customize_register', 'my_custom_banner_option');
+
+// Sanitization callback function
+function sanitize_banner_size_option($input) {
+    $valid = array('resize', 'original');
+
+    if (in_array($input, $valid, true)) {
+        return $input;
+    }
+
+    return 'original'; // Default to 'original' if the input is not valid
+}
 
 // Get the banner class based on the setting
 function get_banner_class() {
@@ -655,3 +660,4 @@ function set_default_banner_size_option() {
     }
 }
 add_action('after_switch_theme', 'set_default_banner_size_option');
+

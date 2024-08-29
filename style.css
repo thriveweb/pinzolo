@@ -2154,9 +2154,10 @@ body.dark .sidebar_widget .wp-block-search__input{
 	    z-index: 999;
 	    left: 20px;
 	}
-	.show_menu .mobile_logo_left img{
-		width: 50px;
-	}
+	.show_menu .mobile_logo_left img {
+        max-width: 150px;
+        max-height: 30px;
+    }
 	#navwrap{
 		height: 70px;
 	}
@@ -2295,6 +2296,10 @@ body.dark .sidebar_widget .wp-block-search__input{
 	ul li.current_page_item a{
 		color: #000 !important;
 	}
+
+    nav ul li.current_page_item > a {
+        color: #b5b5b5 !important;
+    }
 
 	.dark header ul li.current_page_item a, nav ul li ul.sub-menu li.current_page_item a{
 		color: #b5b5b5 !important;
